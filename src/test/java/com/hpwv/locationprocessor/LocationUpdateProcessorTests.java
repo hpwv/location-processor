@@ -32,6 +32,8 @@ public class LocationUpdateProcessorTests {
 
     @Test
     void givenInputMessages_whenProcessed_thenCorrectOutputIsProduced() {
+        locationUpdateProcessor.processorType = "car";
+
         StreamsBuilder streamsBuilder = new StreamsBuilder();
         locationUpdateProcessor.buildPipeline(streamsBuilder);
         Topology topology = streamsBuilder.build();
@@ -39,7 +41,6 @@ public class LocationUpdateProcessorTests {
         Properties props = new Properties();
         props.setProperty(DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         props.setProperty(DEFAULT_VALUE_SERDE_CLASS_CONFIG, JsonSerde.class.getName());
-        props.setProperty(JsonDeserializer.TRUSTED_PACKAGES, "com.hpwv.*");
 
         Map<String, String> deserializerConfig = new HashMap<>();
         deserializerConfig.put(JsonDeserializer.TRUSTED_PACKAGES, "com.hpwv.*");
@@ -55,8 +56,14 @@ public class LocationUpdateProcessorTests {
             TestOutputTopic<String, LocationUpdate> outputTopic = topologyTestDriver
                     .createOutputTopic("output-topic", new StringDeserializer(), deserializer);
 
-            inputTopic.pipeInput("key", new LocationUpdate());
-            inputTopic.pipeInput("key2", new LocationUpdate());
+            LocationUpdate carUpdate = new LocationUpdate();
+            carUpdate.type = "car";
+            LocationUpdate otherUpdate = new LocationUpdate();
+            otherUpdate.type = "bike";
+
+            inputTopic.pipeInput("1", carUpdate);
+            inputTopic.pipeInput("2", carUpdate);
+            inputTopic.pipeInput("3", otherUpdate);
 
             assertThat(outputTopic.readKeyValuesToList().size()).isEqualTo(2);
         }
