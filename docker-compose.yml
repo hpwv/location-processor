@@ -1,0 +1,14 @@
+version: "2"
+services:
+  car:
+    image: buettner123/location-processor
+    build:
+      context: .
+    environment:
+      - PROCESSOR_TYPE=car
+    networks:
+      - kafka-proxy
+
+networks:
+  kafka-proxy:
+    name: kafka
