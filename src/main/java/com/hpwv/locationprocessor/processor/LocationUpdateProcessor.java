@@ -43,7 +43,6 @@ public class LocationUpdateProcessor {
     }
 
     private String getOutputTopicName() {
-        // return processorType + outputTopicPostfix;
-        return "output-topic";
+        return processorType + outputTopicPostfix;
     }
 }

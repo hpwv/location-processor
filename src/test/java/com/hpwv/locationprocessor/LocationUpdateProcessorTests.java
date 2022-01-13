@@ -28,6 +28,7 @@ public class LocationUpdateProcessorTests {
     void setUp() {
         locationUpdateProcessor = new LocationUpdateProcessor();
         locationUpdateProcessor.inputTopic = "location-update";
+        locationUpdateProcessor.outputTopicPostfix = "-updates";
     }
 
     @Test
@@ -54,7 +55,7 @@ public class LocationUpdateProcessorTests {
             deserializer.configure(deserializerConfig, false);
 
             TestOutputTopic<String, LocationUpdate> outputTopic = topologyTestDriver
-                    .createOutputTopic("output-topic", new StringDeserializer(), deserializer);
+                    .createOutputTopic("car-updates", new StringDeserializer(), deserializer);
 
             LocationUpdate carUpdate = new LocationUpdate();
             carUpdate.type = "car";
