@@ -17,3 +17,6 @@ Make sure the Kafka Cluster is up and running before starting the producers.
 Simply run `docker compose up` if you want to see the log output in the current
 terminal session or `docker compose up -d` if you want to start it in the background.
 
+## Stopping
+In order to stop the containers, run `docker compose down`.
+
