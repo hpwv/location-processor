@@ -1,4 +1,3 @@
-version: "2"
 services:
   car:
     image: buettner123/location-processor
@@ -8,7 +7,25 @@ services:
       - PROCESSOR_TYPE=car
     networks:
       - kafka-proxy
-
+    restart: unless-stopped
+  bike:
+    image: buettner123/location-processor
+    build:
+      context: .
+    environment:
+      - PROCESSOR_TYPE=bike
+    networks:
+      - kafka-proxy
+    restart: unless-stopped
+  pedestrian:
+    image: buettner123/location-processor
+    build:
+      context: .
+    environment:
+      - PROCESSOR_TYPE=pedestrian
+    networks:
+      - kafka-proxy
+    restart: unless-stopped
 networks:
   kafka-proxy:
     name: kafka
